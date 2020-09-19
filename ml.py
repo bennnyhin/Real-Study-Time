@@ -26,7 +26,7 @@ def predict(x, ID): # Predict from saved model named ID.pkl. x is a float. Train
         regr_loaded = pickle.load(fid)
     return regr_loaded.predict(np.asarray(x).reshape(1, -1))
 
-#EXAMPLE IMAGE CALLED plotmodel.png
+#EXAMPLE IMAGE CALLED 1.png
 def plotmodel(times, ID, percentage=False, model=True): # plot model from past times, same format as train and generate_noisy_data
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     X = times["Expected time"].values.reshape(-1, 1)
@@ -41,14 +41,17 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
         y_plt = y/X
         fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
         fig.text(0.06, 0.5, 'Actual time / Expected time (lower is better)', ha='center', va='center', rotation='vertical')
+        plt.axhline(1, color='black')
     else:
         axes.set_ylim([1.5*min(X-y), 1.5*max(X-y)])
         y_plt = X-y
         fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
         fig.text(0.06, 0.5, 'Expected time - Actual time (lower is better)', ha='center', va='center', rotation='vertical')
+        plt.axhline(0, color='black')
     if model:
         axes.plot(X, (svr.fit(X, y_plt).predict(X)), color="g", lw=2,
                 label='{} model'.format("SVM regression"))
+    
     axes.scatter([i for idx,i in enumerate(X) if X[idx]<y[idx]], [i for idx,i in enumerate(y_plt) if X[idx]<y[idx]], facecolor="none",
                     edgecolor="g" if percentage is not True else "r", s=50,
                     label='Shorter than expected')
@@ -62,4 +65,18 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     #plt.show()
     plt.savefig(f'{ID}.png')
 
-#plotmodel(generate_noisy_data(), 1, percentage=True)
+def stats(times):
+    X = times[:, 0]
+    y = times[:, 1]
+
+    average_expected_time = np.mean(X)
+    average_actual_time = np.mean(y)
+    
+    average_time_difference = np.mean(y-X) # if positive, expected time is smaller than actual.
+    average_minutes_over = np.mean(y[np.where(y>X)]-X[np.where(y>X)])
+    average_minutes_under = np.mean(y[np.where(y<X)]-X[np.where(y<X)])
+    return {"average expected time": average_expected_time, "average actual time": average_actual_time, "time difference": average_time_difference, "average minutes over": average_minutes_over, "average minutes under": average_minutes_under}
+
+
+#plotmodel(generate_noisy_data(), 1, percentage=False)
+#print(stats(generate_noisy_data()))

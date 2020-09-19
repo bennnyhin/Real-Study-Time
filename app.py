@@ -25,12 +25,25 @@ def landing():
     cur.execute("SELECT * FROM history WHERE username='%s';" % username)
     information = cur.fetchall()
 
-    print("hello world")
+    #create list of different attributes
+    subject_list = []
+    expected_time_list = []
+    real_time_list = []
+    difference_time_list = []
 
     for info in information:
-        print(info[2])
+        subject_list.append(info[1])
+        expected_time_list.append(info[2])
+        real_time_list.append(info[3])
+        difference_time_list.append(info[4])
+    
+    dictionary = {}
+    dictionary["subject"] = subject_list
+    dictionary["expected_time"] = expected_time_list
+    dictionary["real_time"] = real_time_list
+    dictionary["difference_time"] = difference_time_list
 
-    return render_template("landing.html")
+    return render_template("landing.html", dictionary=dictionary)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

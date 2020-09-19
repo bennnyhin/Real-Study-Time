@@ -62,12 +62,4 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     #plt.show()
     plt.savefig(f'{ID}.png')
 
-#EXAMPLE IMAGE CALLED plottimes.png
-def plottimes(times, ID): # plot times only
-    sns.set_theme(style="whitegrid")
-    times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
-    sns.scatterplot(data=times, x="Expected time", y="Actual time");
-    #plt.show() # uncomment to see the plot yourself
-    plt.savefig(f'{ID}.png')
-
 #plotmodel(generate_noisy_data(), 1, percentage=True)

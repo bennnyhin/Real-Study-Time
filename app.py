@@ -82,10 +82,29 @@ def apology():
     return render_template("apology.html")
 
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
+    if request.method == "GET":
+        return render_template("login.html")
+    else:
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if not username:
+            return redirect("/apology")
+        if not password:
+            return redirect("/apology")
+        
+        con = lite.connect("all.db")
+        cur = con.cursor()
+        cur.execute("SELECT * FROM users WHERE username='%s';" % username)
+        information = cur.fetchall()
 
+        for info in information:
+            hash_pass = info[2]
+        
+        if check_password_hash(hash_pass, password):
+            return redirect("/")
+        return redirect("/apology")
 
 if __name__ == "__main__":
     app.run()

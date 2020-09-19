@@ -12,18 +12,18 @@
 
 {% block main %}
     <form action="/register" method="POST">
-        <div class="form-group">
+        <div class="bsec">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="product" name="username">
+            <input type="text" id="product" name="username">
         </div>
-        <div class="form-group">
+        <div class="bsec">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input type="password" id="password" name="password">
         </div>
-        <div class="form-group">
+        <div class="bsec">
             <label for="password">Confirmation Password</label>
-            <input type="password" class="form-control" id="con-password" name="confirmation-password">
+            <input type="password" id="con-password" name="confirmation-password">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" >Submit</button>
     </form>
 {% endblock %}

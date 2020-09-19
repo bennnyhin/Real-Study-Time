@@ -1,4 +1,16 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
 form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bsec {
     display: flex;
     flex-direction: column;
     justify-content: center;

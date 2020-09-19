@@ -1,7 +1,7 @@
 import sys
 import sqlite3 as lite
-from flask_login import LoginManager, UserMixin
 from flask import Flask, redirect, render_template, request, session
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
@@ -16,5 +16,20 @@ app = Flask(__name__)
 def index():
     return render_template("index.html", message="hello")
 
+@app.route("/register")
+def register():
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation_password = request.form.get("confirmation password")
+        return render_template("register.html")
+
+@app.route("/task")
+def task():
+    return render_template("task.html")
+
 if __name__ == "__main__":
     app.run()
+

@@ -11,6 +11,7 @@ app = Flask(__name__)
 # cur.execute("SELECT * FROM information WHERE username='%s'" % username)
 # information = cur.fetchall()
 
+#remember to set global variable of username after login
 
 @app.route("/")
 def index():
@@ -18,7 +19,31 @@ def index():
 
 @app.route("/landing")
 def landing():
-    return render_template("landing.html")
+    con = lite.connect("all.db")
+    cur = con.cursor()
+    username = "testing"
+    cur.execute("SELECT * FROM history WHERE username='%s';" % username)
+    information = cur.fetchall()
+
+    #create list of different attributes
+    subject_list = []
+    expected_time_list = []
+    real_time_list = []
+    difference_time_list = []
+
+    for info in information:
+        subject_list.append(info[1])
+        expected_time_list.append(info[2])
+        real_time_list.append(info[3])
+        difference_time_list.append(info[4])
+    
+    dictionary = {}
+    dictionary["subject"] = subject_list
+    dictionary["expected_time"] = expected_time_list
+    dictionary["real_time"] = real_time_list
+    dictionary["difference_time"] = difference_time_list
+
+    return render_template("landing.html", dictionary=dictionary)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -55,7 +80,7 @@ def task():
 @app.route("/apology")
 def apology():
     return render_template("apology.html")
-    
+
 
 @app.route("/login")
 def login():

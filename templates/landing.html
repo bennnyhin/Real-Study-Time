@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>RealTime</title>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="/static/landing.css">
+    </head>
+    <body>
+        <div class="col" id="col1">
+            <h1 id="welcome">Hello {{ user }}</h1>
+            <form>
+                <h2 id="hbegin">New Task</h2>
+                <div class="iput">
+                    <p class="ht">Task Name: </p>
+                    <input type="text" />
+                </div>
+                <div class="iput">
+                    <p class="ht">Subject: </p>
+                    <input type="text" />
+                </div>
+                <div class="iput">
+                    <p class="ht">Expected Time (h:m:s): </p>
+                    <input type="text" />
+                </div>
+                <div class="iput">
+                    <input type="submit" id="sub" value="START">
+                </div>
+            </form>
+        </div>
+        <div class="col" id="col2">
+            <div class="userInfo">
+                <p>{{ emailAddress }}</p>
+                <p>Log Out</p>
+            </div>
+            <div>
+                <h2>History</h2>
+                <table>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Subject</th>
+                        <th>Expected Time</th>
+                        <th>Real Time</th>
+                        <th>Difference</th>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <button>Stats for nerds</button>
+            </div>
+        </div>
+    </body>
+</html>

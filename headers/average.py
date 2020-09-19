@@ -1,4 +1,4 @@
-#this functino takes the average of all the elements in a list
+#this function takes the average of all the elements in a list
 def average(l):
     ret = 0
     for i in l:

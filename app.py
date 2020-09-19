@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html", message="hello")
+    return render_template("landing.html", message="hello")
 
 @app.route("/register")
 def register():
@@ -40,7 +40,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html")
+    return render_template("task.html", emailAddress="themicklepickle@gmail.com", timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39")
 
 @app.route("/apology")
 def apology():

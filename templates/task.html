@@ -1,8 +1,27 @@
 {% extends "layout.html" %}
 {% block title %}
-    index
+    task
 {% endblock %}
 
 {% block main %}
-    <h1>{{ message }}<h1>
+    <div> 
+        <p>{{ emailAddress }}</p>
+        <p>Log out</p>
+    </div>
+    <div> 
+        <p>{{ timeElapsed }}</p>
+    </div>
+    <div>
+        <button>Complete</button>
+    </div>
+    <div>
+        <div>
+            <p>Expected Time</p>
+            <p>{{ timeExpected }}</p>
+        </div>
+        <div>
+            <p>Time Difference</p>
+            <p>{{ timeDifference }}</p>
+        </div>
+    </div>
 {% endblock %}

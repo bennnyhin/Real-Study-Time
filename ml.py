@@ -3,17 +3,24 @@ import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-def generate_noisy_data(): #Generate noisy data for testing
+def generate_noisy_data(): 
+    #Generate linear noisy data for testing. 
     X = np.sort(5 * np.random.rand(200, 1), axis=0)
     y = X.ravel()
-    y = np.random.normal(y, .2)
+    y = np.random.normal(y, .1)
 
     times = np.column_stack((X, y+0.1))
     return times
 
-def train(times, ID, x): # Times is tuple or iterable in same format as generate_noisy_data (dimensions are (x, 2)). Saves model to ID.pkl
+def train(times, ID, x):
+    r'''
+    Train and save model:
+    args:
+    times (iterable): Same format as generate_noisy_data (dimensions are (x, 2))
+    ID (str or int): Unique identifier, name of saved model
+    x (float): x value (expected time) to predict the y value (actual time)
+    '''
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     regr = svm.SVR()
     regr.fit(times["Expected time"].values.reshape(-1, 1), times["Actual time"].values.reshape(-1, 1))
@@ -21,13 +28,27 @@ def train(times, ID, x): # Times is tuple or iterable in same format as generate
         pickle.dump(regr, fid)
     return regr.predict(np.asarray(x).reshape(1, -1))
 
-def predict(x, ID): # Predict from saved model named ID.pkl. x is a float. Training is so fast that this shouldn't be necessary, but it's here anyways. 
+def predict(x, ID): 
+    r'''
+    Predict from a saved model. Training is so fast that this shouldn't be necessary, but it's here anyways. 
+    args:
+    x (float): x value (expected time) to predict the y value (actual time)
+    ID (str or int): Unique identifier, name of input model file
+    '''
     with open(f'{ID}.pkl', 'rb') as fid:
         regr_loaded = pickle.load(fid)
     return regr_loaded.predict(np.asarray(x).reshape(1, -1))
 
 #EXAMPLE IMAGE CALLED 1.png
 def plotmodel(times, ID, percentage=False, model=True): # plot model from past times, same format as train and generate_noisy_data
+    r'''
+    Function for plotting. Example image produced with this function is titled 1.png.
+    args:
+    times (iterable): Same format as generate_noisy_data (dimensions are (x, 2))
+    ID (int or str): Unique identifier, name of the output image
+    percentage (bool): If true, return graph with percentages (y/x). If false, returns difference (x-y)
+    model (bool): If true, include line of best fit from model. If false, exclude line of best fit.
+    '''
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     X = times["Expected time"].values.reshape(-1, 1)
     y = times["Actual time"].values.reshape(-1, 1)
@@ -66,6 +87,17 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     plt.savefig(f'{ID}.png')
 
 def stats(times):
+    r'''
+    Returns statistics about times
+    args:
+    times (iterable): Same format as generate_noisy_data (dimensions are (x, 2))
+    returns dict of:
+    average expected time: average of all x (expected time) values
+    average actual time: average of all y (actual time) values
+    average time difference: average of y-x
+    average minutes over: average of y-x (time difference) when y>x (actual takes longer than expected)
+    average minutes under: average of y-x (time difference) when y<x (actual takes shorter than expected)
+    '''
     X = times[:, 0]
     y = times[:, 1]
 

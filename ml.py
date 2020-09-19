@@ -27,7 +27,7 @@ def predict(x, ID): # Predict from saved model named ID.pkl. x is a float. Train
     return regr_loaded.predict(np.asarray(x).reshape(1, -1))
 
 #EXAMPLE IMAGE CALLED plotmodel.png
-def plotmodel(times, ID, percentage=False): # plot model from past times, same format as train and generate_noisy_data
+def plotmodel(times, ID, percentage=False, model=True): # plot model from past times, same format as train and generate_noisy_data
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     X = times["Expected time"].values.reshape(-1, 1)
     y = times["Actual time"].values.reshape(-1, 1)
@@ -46,7 +46,8 @@ def plotmodel(times, ID, percentage=False): # plot model from past times, same f
         y_plt = X-y
         fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
         fig.text(0.06, 0.5, 'Expected time - Actual time (lower is better)', ha='center', va='center', rotation='vertical')
-    axes.plot(X, (svr.fit(X, y_plt).predict(X)), color="g", lw=2,
+    if model:
+        axes.plot(X, (svr.fit(X, y_plt).predict(X)), color="g", lw=2,
                 label='{} model'.format("SVM regression"))
     axes.scatter([i for idx,i in enumerate(X) if X[idx]<y[idx]], [i for idx,i in enumerate(y_plt) if X[idx]<y[idx]], facecolor="none",
                     edgecolor="g" if percentage is not True else "r", s=50,
@@ -59,7 +60,7 @@ def plotmodel(times, ID, percentage=False): # plot model from past times, same f
     
     fig.suptitle("Support Vector Regression", fontsize=14)
     #plt.show()
-    plt.savefig(f'{ID}model.png')
+    plt.savefig(f'{ID}.png')
 
 #EXAMPLE IMAGE CALLED plottimes.png
 def plottimes(times, ID): # plot times only
@@ -69,4 +70,4 @@ def plottimes(times, ID): # plot times only
     #plt.show() # uncomment to see the plot yourself
     plt.savefig(f'{ID}.png')
 
-# plotmodel(generate_noisy_data(), 1, percentage=False)
+#plotmodel(generate_noisy_data(), 1, percentage=True)

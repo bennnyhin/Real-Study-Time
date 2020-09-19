@@ -55,6 +55,12 @@ def task():
 @app.route("/apology")
 def apology():
     return render_template("apology.html")
+    
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 
 if __name__ == "__main__":
     app.run()

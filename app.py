@@ -16,14 +16,14 @@ app = Flask(__name__)
 def index():
     return render_template("landing.html", message="hello")
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
     else:
         username = request.form.get("username")
         password = request.form.get("password")
-        confirmation_password = request.form.get("confirmation password")
+        confirmation_password = request.form.get("confirmation-password")
 
         #error checking
         if not username:
@@ -38,11 +38,11 @@ def register():
         pass_hash = generate_password_hash(password)
         con = lite.connect("all.db")
         cur = con.cursor()
-        cur.execute("INERT INTO users (username, password) VALUES ('%s', '%s')" % username, pass_hash)
+        cur.execute("INSERT INTO users (username, password) VALUES (?, ?);", (username, pass_hash))
         con.commit()
         con.close()
 
-        return render_template("register.html")
+        return redirect("/login")
 
 @app.route("/task")
 def task():

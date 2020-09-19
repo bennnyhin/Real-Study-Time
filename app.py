@@ -14,7 +14,11 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("landing.html", message="hello")
+    return render_template("index.html", message="hello")
+
+@app.route("/landing")
+def landing():
+    return render_template("landing.html")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

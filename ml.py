@@ -27,32 +27,39 @@ def predict(x, ID): # Predict from saved model named ID.pkl. x is a float. Train
     return regr_loaded.predict(np.asarray(x).reshape(1, -1))
 
 #EXAMPLE IMAGE CALLED plotmodel.png
-def plotmodel(times, ID): # plot model from past times, same format as train and generate_noisy_data
+def plotmodel(times, ID, percentage=False): # plot model from past times, same format as train and generate_noisy_data
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     X = times["Expected time"].values.reshape(-1, 1)
     y = times["Actual time"].values.reshape(-1, 1)
     svr = svm.SVR(gamma=0.1, epsilon=.1)
     fig, axes = plt.subplots(figsize=(15, 10))
-    if max(X-y)<0.9 and min(X-y)>-0.9:
-        axes.set_ylim([-1, 1])
+    if percentage:
+        if max(X/y)<0.9 and min(X/y)>-0.9:
+            axes.set_ylim([-1, 1])
+        else:
+            axes.set_ylim([min(y/X)-0.1, max(y/X)+0.1])
+        y_plt = y/X
+        fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
+        fig.text(0.06, 0.5, 'Actual time / Expected time (lower is better)', ha='center', va='center', rotation='vertical')
     else:
-        axes.set_ylim([min(X-y)-0.1, max(X-y)+0.1])
-    axes.plot(X, (svr.fit(X, X-y).predict(X)), color="g", lw=2,
+        axes.set_ylim([1.5*min(X-y), 1.5*max(X-y)])
+        y_plt = X-y
+        fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
+        fig.text(0.06, 0.5, 'Expected time - Actual time (lower is better)', ha='center', va='center', rotation='vertical')
+    axes.plot(X, (svr.fit(X, y_plt).predict(X)), color="g", lw=2,
                 label='{} model'.format("SVM regression"))
-    axes.scatter([i for idx,i in enumerate(X) if X[idx]<y[idx]], [X[idx]-i for idx,i in enumerate(y) if X[idx]<y[idx]], facecolor="none",
-                    edgecolor="g", s=50,
+    axes.scatter([i for idx,i in enumerate(X) if X[idx]<y[idx]], [i for idx,i in enumerate(y_plt) if X[idx]<y[idx]], facecolor="none",
+                    edgecolor="g" if percentage is not True else "r", s=50,
                     label='Shorter than expected')
-    axes.scatter([i for idx,i in enumerate(X) if X[idx]>y[idx]],[X[idx]-i for idx,i in enumerate(y) if X[idx]>y[idx]],
-                    facecolor="none", edgecolor="r", s=50,
+    axes.scatter([i for idx,i in enumerate(X) if X[idx]>y[idx]],[i for idx,i in enumerate(y_plt) if X[idx]>y[idx]],
+                    facecolor="none", edgecolor="r" if percentage is not True else "g" , s=50,
                     label='Longer than expected')
     axes.legend(loc='upper center', bbox_to_anchor=(0.5, 1.1),
                     ncol=1, fancybox=True, shadow=True)
-
-    fig.text(0.5, 0.04, 'Expected time', ha='center', va='center')
-    fig.text(0.06, 0.5, 'Actual time', ha='center', va='center', rotation='vertical')
+    
     fig.suptitle("Support Vector Regression", fontsize=14)
-    plt.show()
-    #plt.savefig(f'{ID}model.png')
+    #plt.show()
+    plt.savefig(f'{ID}model.png')
 
 #EXAMPLE IMAGE CALLED plottimes.png
 def plottimes(times, ID): # plot times only
@@ -62,4 +69,4 @@ def plottimes(times, ID): # plot times only
     #plt.show() # uncomment to see the plot yourself
     plt.savefig(f'{ID}.png')
 
-plotmodel(generate_noisy_data(), 1)
+# plotmodel(generate_noisy_data(), 1, percentage=False)

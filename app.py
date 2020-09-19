@@ -35,6 +35,12 @@ def register():
         if password != confirmation_password:
             return redirect("/apology")
         
+        pass_hash = generate_password_hash(password)
+        con = lite.connect("all.db")
+        cur = con.cursor()
+        cur.execute("INERT INTO users (username, password) VALUES ('%s', '%s')" % username, pass_hash)
+        con.commit()
+        con.close()
 
         return render_template("register.html")
 

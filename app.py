@@ -24,11 +24,27 @@ def register():
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation_password = request.form.get("confirmation password")
+
+        #error checking
+        if not username:
+            return redirect("/apology")
+        if not password:
+            return redirect("/apology")
+        if not confirmation_password:
+            return redirect("/apology")
+        if password != confirmation_password:
+            return redirect("/apology")
+        
+
         return render_template("register.html")
 
 @app.route("/task")
 def task():
     return render_template("task.html")
+
+@app.route("/apology")
+def apology():
+    return render_template("apology.html")
 
 if __name__ == "__main__":
     app.run()

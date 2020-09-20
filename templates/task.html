@@ -192,7 +192,7 @@
                             timerElement.innerText = secondsToString(timerCounter);
                             progressBar.value = timerCounter;
                             time_difference = time_difference + 1;  
-                            difference_time.innerText = time_difference;
+                            difference_time.innerText = secondsToString(time_difference);
                         }
                     }, 1000)
 
@@ -208,7 +208,7 @@
                 </div>
                 <div class="timeDifferenceDiv">
                     <p class="bottomText">Time Difference</p>
-                    <p class="bottomHeader" id="difference_time">0</p>
+                    <p class="bottomHeader" id="difference_time">0:0:0</p>
                 </div>
             </div>
         </main>

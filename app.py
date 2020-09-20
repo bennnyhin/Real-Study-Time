@@ -190,7 +190,7 @@ def complete():
 
     con = lite.connect("all.db")
     cur = con.cursor()
-    cur.execute("INSERT INTO history (username, project, expected_time, real_time, difference_time) VALUES (?, ?, ?, ?,?);", (username_global, task_name, expected_time, time_total, time_difference))
+    cur.execute("INSERT INTO history (username, task_name, expected_time, real_time, difference_time) VALUES (?, ?, ?, ?,?);", (username_global, task_name, expected_time, time_total, time_difference))
     con.commit()
     con.close()
     return redirect("/")

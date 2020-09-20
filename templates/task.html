@@ -17,11 +17,108 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     </head>         
-    <body style="background-color: green;">
+    <body style="background-color: rgb(240, 139, 17);">
         <main class="container p-5">
+            <style>
+
+                .userInfo {
+                    position: absolute;
+                    right: 50px;
+                    text-align: right;
+                }
+    
+                .email {
+                    color: white;
+                }
+    
+                .logout {
+                    color: white;
+                }
+    
+                .timeElapsedDiv {
+                    width: 100%;
+                    text-align: center;
+                    margin: 0;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+    
+                .timeElapsed {
+                    text-align: center;
+                    color: white;
+                    background-color: transparent;
+                    font-size: 150px;
+                    transition-duration: 0.4s;
+                }
+                a:link {
+                    color: white;
+                }
+                a:visited {
+                    color: white;
+                    text-decoration: none;
+                }
+                a:hover {
+                    color: lightgray;
+                    text-decoration: none;
+                }
+                a:active {
+                    color: white;
+                    text-decoration: none;
+                }
+    
+                .completedDiv {
+                    bottom: 0;
+                    display: flex;
+                    justify-content: center;
+                }
+                .completed {
+                    margin-top: 60vh;
+                    background-color: lightskyblue;
+                    color: white;
+                    border: none;
+                    padding: 15px 32px;
+                    text-align: center;
+                    font-size: 30px;
+                    border-radius: 10px;
+                    transition-duration: 0.4s;
+                }
+                .completed:hover {
+                    color: lightskyblue;
+                    background-color: white;
+                }
+
+                .bottomDiv {
+                    width: 600px;
+                    margin: 0 auto;
+                    padding-top: 50px;
+                    color: white;
+                }
+
+                .timeExpectedDiv {
+                    width: 250px;
+                    float: left;
+                    text-align: center;
+                }
+
+                .timeDifferenceDiv {
+                    width: 250px;
+                    float: right;
+                    text-align: center;
+                }
+
+                .bottomHeader {
+                    font-size: 40px;
+                }
+                
+                .bottomText {
+                    font-size: 20px;
+                }
+            </style>
             <div class="userInfo"> 
                 <p class="email">{{ emailAddress }}</p>
-                <button class="logout">Log out</button>
+                <a class="logout" href="">Log out</a>
             </div>
             <div class="timeElapsedDiv"> 
                 <a class="timeElapsed" href="">{{ timeElapsed }}</a>
@@ -29,14 +126,14 @@
             <div class="completedDiv">
                 <button class="completed" href="">Complete</button>
             </div>
-            <div>
-                <div>
-                    <p>Expected Time</p>
-                    <p>{{ timeExpected }}</p>
+            <div class="bottomDiv">
+                <div class="timeExpectedDiv">
+                    <p class="bottomText">Expected Time</p>
+                    <p class="bottomHeader">{{ timeExpected }}</p>
                 </div>
-                <div>
-                    <p>Time Difference</p>
-                    <p>{{ timeDifference }}</p>
+                <div class="timeDifferenceDiv">
+                    <p class="bottomText">Time Difference</p>
+                    <p class="bottomHeader">{{ timeDifference }}</p>
                 </div>
             </div>
         </main>

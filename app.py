@@ -130,7 +130,9 @@ def stats():
     for info in information:
         predicted_time_list.append(info[3])
         actual_time_list.append(info[4])
-    
+
+    times = np.column_stack(np.asarray(predicted_time_list), np.asarray(actual_time_list))
+    return render_template("stats.html")
 
 
     # if request.method == "GET":

@@ -3,7 +3,7 @@ import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 # import headers.average, headers.timeConversions, headers.timer
-# from ml import *
+from ml import *
 
 app = Flask(__name__)
 app.secret_key = "asfdjklasdjflasdkf"
@@ -55,13 +55,14 @@ def landing():
 
     else:
         #for getting the timer
-        global expected_time
+        global expected_time, task_name, subject
         expected_time = request.form.get("expected_time")
         subject = request.form.get("subject")
         task_name = request.form.get("task_name")
+
         
         #error checking
-        if expected_time < 1:
+        if int(expected_time) < 1:
             return redirect("/apology")
         if not subject:
             return redirect("/apology")
@@ -101,7 +102,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress=username_global, timeExpected=expected_time, timeDifference="44:39", timer=session["timer"])
+    return render_template("task.html", emailAddress=username_global, timeExpected=expected_time, timer=session["timer"])
 
 
 @app.route("/apology")
@@ -141,28 +142,60 @@ def login():
 '''
 todo: 
 html according to this link: https://docs.google.com/drawings/d/1mPRTqE2jXMfDL8ZYX_1ulpt7_qXSAaNUh-PLpcZjDkI/edit?usp=sharing
-add times (iterable, with this format:)  ((predicted_time1, actual_time1), (predicted_time2, actual_time2), (predicted_timen, actual_timen))
 Add model download that redirects to static/{id}.pkl
-what format does cur.fetchall() output?
 '''
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
-    # if "user" in session:
-    #     if request.method == "GET":
-    #         return render_template("stats.html", user_image = None)
-    #     else:
-    #         percentage = request.form.get("percentage")
-    #         model = request.form.get("percentage")
-    #         if not username:
-    #             return redirect("/apology")
-    #         if not password:
-    #             return redirect("/apology")
-            
-    #         plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+    if request.method == "GET":
+        if "user" in session:
+            return render_template("stats.html", user_image = None)
+        else:
+            return redirect("/")
+    else:
+        percentage = request.form.get("percentagee")
+        percentage = True if percentage=='on' else False
+        model = request.form.get("modell")
+        model = True if model=='on' else False
+        stat = request.form.get("stats")
+        con = lite.connect("all.db")
+        cur = con.cursor()
+        cur.execute("SELECT * FROM history WHERE username='%s';" % username_global)
+        information = cur.fetchall()
 
-            return render_template("stats.html", user = "1")
+        predicted_time_list = []
+        actual_time_list = []
 
+        for info in information:
+            predicted_time_list.append(info[3])
+            actual_time_list.append(info[4])
+        times = np.column_stack([np.asarray(predicted_time_list), np.asarray(actual_time_list)])
+        
+        # COMMENT THE FOLLOWING LINE OUT IF LEGIT DATA
+        times = generate_noisy_data()
+        print(percentage)
+        print(model)
+        plotmodel(times, username_global, percentage=percentage, model=model) # please see ml.py for what this does, there is detailed documentation there
+        if stat:
+            stati = statistics(times)
+            print(stati)
+        else: 
+            stati=None
+        return render_template("stats.html", user = username_global, statistics=stati)
+
+@app.route("/complete")
+def complete():
+    time_difference = request.args.get('difference')
+    print(time_difference)
+    time_total = int(expected_time) + int(time_difference)
+
+    con = lite.connect("all.db")
+    cur = con.cursor()
+    cur.execute("INSERT INTO history (username, project, expected_time, real_time, difference_time) VALUES (?, ?, ?, ?,?);", (username_global, task_name, expected_time, time_total, time_difference))
+    con.commit()
+    con.close()
+    return redirect("/")
+    
 
 @app.route("/logout")
 def logout():

@@ -124,12 +124,12 @@
                 <a class="logout" href="/logout">Log out</a>
             </div>
             <div class="timeElapsedDiv"> 
-                <a id="timer" class="timeElapsed" href="javascript:toggle_display()">{{ timer }}</a>
+                <a id="timer" class="timeElapsed" href="javascript:toggle_display()">0</a>
                 <br/>
-                <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
+                <progress max="{{ timer }}" value=0 id="progressBar"></progress>
                 <script type="application/javascript">
                     let stop_timer = false;
-                    var timer_going = true;
+                    let timer_going = true;
 
                     function complete(){
                         stop_timer = true;
@@ -164,22 +164,29 @@
                             el.style.visibility = 'visible'
                         } else {
                             el.style.visibility = 'hidden'
-                }
-            }
-                    
+                        }
+                    }
+
                     const timerElement = document.getElementById("timer");
                     const progress = document.getElementById("progressBar");
     
-                    var timerCounter = progressBar.max;
+                    let timerCounter = 0;
+                    let time_difference = progressBar.max * -1;
+                    let expected_time = progressBar.max;
     
                     const interval = setInterval(function() {
                         if (stop_timer){
                             clearInterval(interval);
+                            window.location.href = "/complete?difference=" + time_difference.toString();
+                            // window.location.href = "/complete?total=" + timerCounter.toString();
+                            // window.location.href = "/complete?expected=" + expected_time.toString();
                         }
                         if (timer_going){
-                            timerCounter = timerCounter - 1;
+                            timerCounter = timerCounter + 1;
                             timerElement.innerText = timerCounter;
                             progressBar.value = timerCounter;
+                            time_difference = time_difference + 1;  
+                            difference_time.innerText = time_difference;
                         }
                     }, 1000)
 
@@ -195,7 +202,7 @@
                 </div>
                 <div class="timeDifferenceDiv">
                     <p class="bottomText">Time Difference</p>
-                    <p class="bottomHeader">{{ timeDifference }}</p>
+                    <p class="bottomHeader" id="difference_time">0</p>
                 </div>
             </div>
         </main>

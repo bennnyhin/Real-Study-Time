@@ -22,15 +22,22 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-    <div class="container p-5">
-        <!-- Download the pickle model by creating a button. No clue how to do this, but it is in /static/{{  user  }}.pkl -->
-        <!-- <form method="get" action="/static/{{  user }}.pkl"> -->
-        <form action="http://127.0.0.1:5000/static/{{  user  }}.pkl">
-        <button type="submit">Download Model</button>
-        </form>
-    </div> 
+    <div class="float-left">
+        {% if statistics %}
+        <table>
+        {% for key, value in statistics.items() %}
+        <tr>
+                <th> {{ key }} </th>
+                <td> {{ value }} </td>
+        </tr>
+        {% endfor %}
+        </table>
+        {% endif %}
+    </div>
     <div class="float-right">
-        <!-- Display image, this works. -->
+        <!-- Display image, this works, but we need to rerender whenever submit is clicked-->
+        {% if user %}
         <img src="/static/{{ user }}.png" alt="Plot">
+        {% endif %}
     </div>
 {% endblock %}

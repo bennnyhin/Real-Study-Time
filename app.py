@@ -16,7 +16,7 @@ app.secret_key = "hello"
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return redirect("/login")
 
 @app.route("/landing", methods=["GET", "POST"])
 def landing():

@@ -6,7 +6,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # from ml import *
 
 app = Flask(__name__)
-app.secret_key = "hello"
+app.secret_key = "asfdjklasdjflasdkf"
 
 #example how to access database
 # con = lite.connect("information.db")
@@ -16,7 +16,10 @@ app.secret_key = "hello"
 
 @app.route("/")
 def index():
-    return redirect("/login")
+    if "user" in session:
+        return redirect("/landing")
+    else:
+        return redirect("/login")
 
 @app.route("/landing", methods=["GET", "POST"])
 def landing():
@@ -56,6 +59,15 @@ def landing():
         expected_time = request.form.get("expected_time")
         subject = request.form.get("subject")
         task_name = request.form.get("task_name")
+        
+        #error checking
+        if expected_time < 1:
+            return redirect("/apology")
+        if not subject:
+            return redirect("/apology")
+        if not task_name:
+            return redirect("/apology")
+
         session["timer"] = expected_time
         return redirect("/task")
 
@@ -122,6 +134,7 @@ def login():
             username_global = username
             session["user"] = username
             return redirect("/")
+            
         return redirect("/apology")
 
 

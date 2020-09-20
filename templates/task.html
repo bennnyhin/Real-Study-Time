@@ -1,103 +1,46 @@
-{% extends "layout.html" %}
-{% block title %}
-    task
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block main %}
-    <style>
-        .main {
-            background-color: green;
-        }
+        <title>Task</title>
 
-        .userInfo {
-            position: absolute;
-            right: 50px;
-            text-align: right;
-        }
+        <!-- Bootstrap style sheet -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
 
-        /* .email {
-            
-        }
+        <link href="/static/task.css" rel="stylesheet">
 
-        .logout {
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
-        } */
-
-        .timeElapsedDiv {
-            width: 100%;
-            text-align: center;
-            margin: 0;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .timeElapsed {
-            text-align: center;
-            color: white;
-            background-color: transparent;
-            font-size: 150px;
-            transition-duration: 0.4s;
-        }
-        a:link {
-            color: white;
-        }
-        a:visited {
-            color: white;
-            text-decoration: none;
-        }
-        a:hover {
-            color: lightgray;
-            text-decoration: none;
-        }
-        a:active {
-            color: white;
-            text-decoration: none;
-        }
-
-        .completedDiv {
-            bottom: 0;
-            display: flex;
-            justify-content: center;
-        }
-        .completed {
-            margin-top: 60vh;
-            background-color: lightskyblue;
-            color: white;
-            border: none;
-            padding: 15px 32px;
-            text-align: center;
-            font-size: 45px;
-            border-radius: 10px;
-            transition-duration: 0.4s;
-        }
-        .completed:hover {
-            color: lightskyblue;
-            background-color: white;
-        }
-        
-    </style>
-    <div class="main">
-        <div class="userInfo"> 
-            <p class="email">{{ emailAddress }}</p>
-            <button class="logout">Log out</button>
-        </div>
-        <div class="timeElapsedDiv"> 
-            <a class="timeElapsed" href="">{{ timeElapsed }}</a>
-        </div>
-        <div class="completedDiv">
-            <button class="completed" href="">Complete</button>
-        </div>
-        <div>
-            <div>
-                <p>Expected Time</p>
-                <p>{{ timeExpected }}</p>
+    </head>         
+    <body style="background-color: green;">
+        <main class="container p-5">
+            <div class="userInfo"> 
+                <p class="email">{{ emailAddress }}</p>
+                <button class="logout">Log out</button>
+            </div>
+            <div class="timeElapsedDiv"> 
+                <a class="timeElapsed" href="">{{ timeElapsed }}</a>
+            </div>
+            <div class="completedDiv">
+                <button class="completed" href="">Complete</button>
             </div>
             <div>
-                <p>Time Difference</p>
-                <p>{{ timeDifference }}</p>
+                <div>
+                    <p>Expected Time</p>
+                    <p>{{ timeExpected }}</p>
+                </div>
+                <div>
+                    <p>Time Difference</p>
+                    <p>{{ timeDifference }}</p>
+                </div>
             </div>
-        </div>
-    </div>
-{% endblock %}
+        </main>
+    </body>
+</html>
+
+    

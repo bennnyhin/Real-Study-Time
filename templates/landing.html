@@ -5,18 +5,34 @@
 {% endblock %}
 
 {% block main %}
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                One of three columns
+    <div class="row">
+        <div class="col-4" style="background-color: #3d85c6;">
+            <div class="container p-5">
+                <h1>Hello {{ user }}</h1>
+                <form>
+                    <div class="form-group">
+                        <label for="taskName">Task Name</label>
+                        <input type="text" class="form-control" id="taskName">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" class="form-control" id="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="expectedTime">Expected Time</label>
+                        <input type="text" class="form-control" id="expectedTime">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-            <div class="col-6">
-                One of three columns
-            </div>
+        </div>
+        <div class="col-8">
+            One of three columns
         </div>
     </div>
 {% endblock %}
 
+<!DOCTYPE html>
 
 <!-- <html>
     <head>

@@ -86,7 +86,7 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     #plt.show()
     plt.savefig(f'static/{ID}.png')
 
-def stats(times):
+def statistics(times):
     r'''
     Returns statistics about times
     args:

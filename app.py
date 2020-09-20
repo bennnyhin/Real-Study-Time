@@ -20,7 +20,7 @@ app.secret_key = "asfdjklasdjflasdkf"
 
 @app.route("/")
 def index():
-    if "user" in session:
+    if "user" in session and username_global is not None:
         return redirect("/landing")
     else:
         return redirect("/login")

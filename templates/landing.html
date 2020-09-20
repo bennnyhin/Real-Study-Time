@@ -1,84 +1,169 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    Landing
-{% endblock %}
-
-{% block main %}
-    <div class="row">
-        <div class="col-4" style="background-color: #3d85c6;">
-            <div class="container p-5">
-                <h1>Hello {{ user }}</h1>
-                <form action="/landing", method="POST">
-                    <div class="form-group">
-                        <label for="taskName">Task Name</label>
-                        <input type="text" class="form-control" id="taskName" name="task_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" class="form-control" id="subject" name="subject">
-                    </div>
-                    <div class="form-group">
-                        <label for="expectedTime">Expected Time</label>
-                        <input type="number" class="form-control" id="expectedTime" name="expected_time">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-        <div class="col-8">
-            One of three columns
-        </div>
-    </div>
-{% endblock %}
-
+<!DOCTYPE html>
 <!DOCTYPE html>
 
-<!-- <html>
+<html>
     <head>
         <title>RealTime</title>
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet"> 
-        <link rel="stylesheet" href="/static/landing.css">
+        <link rel="stylesheet" href="static/landing.css">
+
+        <style>
+            * {
+                margin: 0px;
+                padding: 0px;
+                /* font-family: 'IBM Plex Sans', sans-serif; */
+            }
+
+            body {    
+                display: flex;
+                flex-direction: row;
+            }
+
+            .col {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                /* padding-left: 60px;
+                padding-right: 60px; */
+            }
+
+            #col1 {
+                background-color: #3d85c6;
+                color: white;
+            }
+
+            #welcome {
+                text-align: center;
+                margin-bottom: 150px;
+            }
+
+            #hbegin {
+                text-align: center;
+            }
+
+            .iput {
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            input {
+                width: 100%;
+                padding: 10px;
+                font-size: 20px;
+                border: 2px solid black;
+                border-radius: 10px;
+            }
+
+            #sub {
+                width: 100%;
+                margin-top: 50px;
+                background-color: lightskyblue;
+                color: white;
+                border: 2px solid white;
+                padding: 15px 32px;
+                text-align: center;
+                font-size: 30px;
+                border-radius: 10px;
+                transition: color 0.4s, background-color 0.4s, visibility 0s, border 0.4s;
+            }
+            #sub:hover {
+                color: lightskyblue;
+                background-color: white;
+                border: 2px solid lightskyblue;
+            }
+
+            .ht {
+                margin-bottom: 15px;
+            }
+
+            .center {
+                display: flex;
+            }
+
+            .userInfo {
+                position: absolute;
+                right: 50px;
+                text-align: right;
+                
+            }
+
+            .username {
+                padding-bottom: 10px;
+            }
+
+            a:link {
+                font-size: 15px;
+                color: black;
+                text-decoration: none;
+            }
+            a:visited {
+                color: black;
+                text-decoration: none;
+            }
+            a:hover {
+                color: lightgray;
+                text-decoration: none;
+            }
+            a:active {
+                color: black;
+                text-decoration: none;
+            }
+
+            h2 {
+                padding-bottom: 20px;
+                font-size: 40px;
+
+            }
+
+            th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .header {
+                font-size: 20px;
+            }
+
+            table{
+                border-collapse:collapse;
+                border:1px solid lightgray;
+            }
+
+            table td{
+                border:1px solid lightgray;
+                padding: 10px;
+            }
+
+            .stats {
+                margin-top: 30px;
+                background-color: lightskyblue;
+                color: white;
+                border: 2px solid white;
+                padding: 15px 32px;
+                text-align: center;
+                font-size: 30px;
+                border-radius: 10px;
+                transition: color 0.4s, background-color 0.4s, visibility 0s, border 0.4s;
+            }
+            .stats:hover {
+                color: lightskyblue;
+                background-color: white;
+                border: 2px solid lightskyblue;
+            }
+        </style>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
-                </div>
-                <div class="col-sm">
-                    One of three columns
-                </div>
-            </div>
-        </div>
         <div class="col" id="col1">
             <h1 id="welcome">Hello {{ user }}</h1>
-            <script>
-                function start() {
-                    window.location.href = "/landing?difference=" + time_difference.toString()
-                }
-            </script>
-            <form action="javascript:start()">
+            <form action="/landing", method="POST">
                 <h2 id="hbegin">New Task</h2>
                 <div class="iput">
-                    <p class="ht">Task Name: </p>
-                    <input type="text" />
+                    <p class="ht">Task Name</p>
+                    <input type="text" name="task_name"/>
                 </div>
                 <div class="iput">
-<<<<<<< HEAD
-                    <p class="ht">Subject: </p>
-                    <input type="text" />
-                </div>
-                <div class="iput">
-                    <p class="ht">Expected Time (h:m:s): </p>
-                    <input type="text" />
-=======
                     <p class="ht">Expected Time</p>
                     <input type="text" name="expected_time" placeholder="Hours:Minutes:Seconds"/>
->>>>>>> 940b9c8fbb368c0eae73eb2aadcf0fdff434353c
                 </div>
                 <div class="iput">
                     <input type="submit" id="sub" value="START">
@@ -87,24 +172,31 @@
         </div>
         <div class="col" id="col2">
             <div class="userInfo">
-                <p>{{ emailAddress }}</p>
-                <p>Log Out</p>
+                <p class="username">{{ user }}</p>
+                <a class="logout" href="/logout">Log Out</a>
             </div>
             <div>
                 <h2>History</h2>
-                <table>
-                    <tr>
+                <table style="width: 100%">
+                    <tr class="header">
                         <th>Task Name</th>
-                        <th>Subject</th>
                         <th>Expected Time</th>
                         <th>Real Time</th>
                         <th>Difference</th>
                     </tr>
+                    {% for i in range(numElements) %}
+                        <tr>
+                            <td>{{ dictionary["task_name"][i] }}</th>
+                            <td>{{ dictionary["expected_time"][i] }}</th>
+                            <td>{{ dictionary["real_time"][i] }}</th>
+                            <td>{{ dictionary["difference_time"][i] }}</th>
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div>
-                <button>Stats for nerds</button>
+                <button class="stats" href="https://google.com">More Stats</button>
             </div>
         </div>
     </body>
-</html> -->
+</html>

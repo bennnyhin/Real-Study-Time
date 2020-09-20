@@ -43,11 +43,23 @@ def landing():
             real_time_list = []
             difference_time_list = []
 
+            difference = []
+
             for info in information:
                 task_name_list.append(info[1])
                 expected_time_list.append(info[2])
-                real_time_list.append(info[3])
-                difference_time_list.append(info[4])
+                real_time_list.append(info[4])
+                # for (x,y) in zip(info[3], info[4]):
+                #     if (x == None or y == None):
+                #         difference.append(None)
+                #     else:
+                #         difference.append(x - y)
+                if (info[4] == None or info[3] == None):
+                    difference_time_list.append(None)
+                else:
+                    difference_time_list.append(info[4] - info[3])
+
+                # difference_time_list.append(difference)
 
             dictionary = {}
             dictionary["task_name"] = task_name_list

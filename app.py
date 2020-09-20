@@ -49,7 +49,7 @@ def landing():
             dictionary["expected_time"] = expected_time_list
             dictionary["real_time"] = real_time_list
             dictionary["difference_time"] = difference_time_list
-            return render_template("landing.html", dictionary=dictionary)
+            return render_template("landing.html", dictionary=dictionary, user="Person Hello") #TODO change this back to username_global
         else:
             return redirect("/")
 

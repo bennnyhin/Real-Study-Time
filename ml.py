@@ -32,8 +32,6 @@ def train(times, ID, X):
     times = pd.DataFrame(times, columns=["Expected time", "Actual time", "Subject"])
     d = dict([(y,x+1) for x,y in enumerate(sorted(set(times['Subject'].unique())))])
     times.loc[:, 'Subject'] = times.loc[:, 'Subject'].map(d)
-    #bin = LabelBinarizer()
-    #x = np.asarray(bin.fit_transform(times.Subject))
     temp = times.Subject.copy()
     x = pd.get_dummies(times.Subject)
     print(x.shape)
@@ -45,23 +43,11 @@ def train(times, ID, X):
         pickle.dump(regr, fid)
     pred = pd.DataFrame([X], columns = ["Expected time", "Subject"])
     pred.loc[:, 'Subject'] = pred.loc[:, 'Subject'].map(d)
-    #X = np.asarray(bin.fit_transform(pred.Subject))
     X = np.asarray(pd.get_dummies(temp.append(pred.Subject)))
     X = np.column_stack((pred["Expected time"].values[0], [X[-1]]))
     return regr.predict(X)
 
-print(train(generate_noisy_data(train=True), 1, (24, 'a')))
-
-def predict(x, ID): 
-    r'''
-    Predict from a saved model. Training is so fast that this shouldn't be necessary, but it's here anyways. 
-    args:
-    x (float): x value (expected time) to predict the y value (actual time)
-    ID (str or int): Unique identifier, name of input model file
-    '''
-    with open(f'static/{ID}.pkl', 'rb') as fid:
-        regr_loaded = pickle.load(fid)
-    return regr_loaded.predict(np.asarray(x).reshape(1, -1))
+# print(train(generate_noisy_data(train=True), 1, (24, 'a'))) # Example train call
 
 #EXAMPLE IMAGE CALLED 1.png
 def plotmodel(times, ID, percentage=False, model=True): # plot model from past times, same format as train and generate_noisy_data

@@ -2,7 +2,7 @@ import sys
 import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
-import average, timeConversions, timer
+import headers.average, headers.timeConversions, headers.timer
 from ml import *
 
 app = Flask(__name__)

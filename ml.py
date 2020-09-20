@@ -25,9 +25,10 @@ def train(times, ID, X):
     r'''
     Train and save model:
     args:
-    times (iterable): Same format as generate_noisy_data but with a 3rd column at the end with strings
+    times (iterable): Same format as generate_noisy_data but with a 3rd column at the end with strings ((expected_time_1 (int or float), actual_time_1 (int or float), subject_1 (str)), (expected_time_n, actual_time_n, subject_n))
     ID (str or int): Unique identifier, name of saved model
     x (iterable): x value (format: (expected time, "subject")) to predict the y value (actual time)
+    output: 1 long list of predictions, model at static/{ID}.pkl
     '''
     times = pd.DataFrame(times, columns=["Expected time", "Actual time", "Subject"])
     d = dict([(y,x+1) for x,y in enumerate(sorted(set(times['Subject'].unique())))])
@@ -54,10 +55,11 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     r'''
     Function for plotting. Example image produced with this function is titled 1.png.
     args:
-    times (iterable): Same format as generate_noisy_data (dimensions are (x, 2))
+    times (iterable): Same format as generate_noisy_data ((expected_time_1, actual_time_1), (expected_time_n, actual_time_n))
     ID (int or str): Unique identifier, name of the output image
     percentage (bool): If true, return graph with percentages (y/x). If false, returns difference (x-y)
     model (bool): If true, include line of best fit from model. If false, exclude line of best fit.
+    output: .png file saved at static/{ID}.png
     '''
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     X = times["Expected time"].values.reshape(-1, 1)
@@ -107,6 +109,7 @@ def statistics(times):
     average time difference: average of y-x
     average minutes over: average of y-x (time difference) when y>x (actual takes longer than expected)
     average minutes under: average of y-x (time difference) when y<x (actual takes shorter than expected)
+    output: Dict
     '''
     X = times[:, 0]
     y = times[:, 1]

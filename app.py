@@ -4,6 +4,7 @@ from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 # import headers.average, headers.timeConversions, headers.timer
 from ml import *
+import pandas as pd
 
 expected_time = None
 task_name = None
@@ -171,9 +172,10 @@ def stats():
         times = np.column_stack([np.asarray(predicted_time_list), np.asarray(actual_time_list)])
         
         # COMMENT THE FOLLOWING LINE OUT IF LEGIT DATA
-        times = generate_noisy_data()
-        print(percentage)
-        print(model)
+        # times = generate_noisy_data()
+        times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
+        times = times.dropna()
+        times = times.values.astype(np.float32)
         plotmodel(times, username_global, percentage=percentage, model=model) # please see ml.py for what this does, there is detailed documentation there
         if stat:
             stati = statistics(times)

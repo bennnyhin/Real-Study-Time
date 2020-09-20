@@ -54,3 +54,13 @@ input {
 .center {
     display: flex;
 }
+
+.userInfo {
+    position: absolute;
+    right: 50px;
+    text-align: right;
+}
+
+.logout {
+    font-size: 50px;
+}

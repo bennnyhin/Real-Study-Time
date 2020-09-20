@@ -101,7 +101,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress=username_global, timeExpected=expected_time, timeDifference="44:39", timer=session["timer"])
+    return render_template("task.html", emailAddress=username_global, timeExpected=expected_time, timer=session["timer"])
 
 
 @app.route("/apology")
@@ -148,6 +148,7 @@ what format does cur.fetchall() output?
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
+
     # if "user" in session:
     #     if request.method == "GET":
     #         return render_template("stats.html", user_image = None)

@@ -129,7 +129,7 @@
                 <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
                 <script type="application/javascript">
                     let stop_timer = false;
-                    var timer_going = true;
+                    let timer_going = true;
 
                     function complete(){
                         stop_timer = true;
@@ -170,18 +170,21 @@
                     const timerElement = document.getElementById("timer");
                     const progress = document.getElementById("progressBar");
     
-                    var timerCounter = progressBar.max;
+                    var timerCounter = 0;
     
                     const interval = setInterval(function() {
                         if (stop_timer){
                             clearInterval(interval);
                         }
                         if (timer_going){
-                            timerCounter = timerCounter - 1;
+                            timerCounter = timerCounter + 1;
                             timerElement.innerText = timerCounter;
                             progressBar.value = timerCounter;
                         }
                     }, 1000)
+
+
+                    let time_difference = timerCounter - progressBar.max
 
                 </script>
             </div>

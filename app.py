@@ -28,7 +28,7 @@ def landing():
             #for displaying the history
             con = lite.connect("all.db")
             cur = con.cursor()
-            username = "testing"
+            username = username_global
             cur.execute("SELECT * FROM history WHERE username='%s';" % username)
             information = cur.fetchall()
 
@@ -49,7 +49,7 @@ def landing():
             dictionary["expected_time"] = expected_time_list
             dictionary["real_time"] = real_time_list
             dictionary["difference_time"] = difference_time_list
-            return render_template("landing.html", dictionary=dictionary, user="Person Hello", numElements=len(dictionary["task_name"])) #TODO change this back to username_global
+            return render_template("landing.html", dictionary=dictionary, user=username_global, numElements=len(dictionary["task_name"])) #TODO change this back to username_global
         else:
             return redirect("/")
 
@@ -62,8 +62,6 @@ def landing():
         
         #error checking
         if int(expected_time) < 1:
-            return redirect("/apology")
-        if not subject:
             return redirect("/apology")
         if not task_name:
             return redirect("/apology")

@@ -2,6 +2,7 @@ import sys
 import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
+import average, timeConversions, timer
 
 app = Flask(__name__)
 
@@ -12,10 +13,12 @@ app = Flask(__name__)
 # information = cur.fetchall()
 
 #remember to set global variable of username after login
+username_global 
+
 
 @app.route("/")
 def index():
-    return render_template("index.html", message="hello")
+    return render_template("index.html")
 
 @app.route("/landing")
 def landing():
@@ -77,6 +80,7 @@ def register():
 def task():
     return render_template("task.html", emailAddress="themicklepickle@gmail.com", timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39")
 
+
 @app.route("/apology")
 def apology():
     return render_template("apology.html")
@@ -103,8 +107,13 @@ def login():
             hash_pass = info[2]
         
         if check_password_hash(hash_pass, password):
+            username_global = username
             return redirect("/")
         return redirect("/apology")
+
+@app.route("/stats")
+def stats():
+    return render_template("stats.html")
 
 if __name__ == "__main__":
     app.run()

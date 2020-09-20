@@ -52,6 +52,7 @@ def landing():
 
     else:
         #for getting the timer
+        global expected_time
         expected_time = request.form.get("expected_time")
         subject = request.form.get("subject")
         task_name = request.form.get("task_name")
@@ -88,7 +89,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress=username_global, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39", timer=session["timer"])
+    return render_template("task.html", emailAddress=username_global, timeExpected=expected_time, timeDifference="44:39", timer=session["timer"])
 
 
 @app.route("/apology")

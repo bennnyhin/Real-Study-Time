@@ -33,31 +33,30 @@ def landing():
             information = cur.fetchall()
 
             #create list of different attributes
-            subject_list = []
+            task_name_list = []
             expected_time_list = []
             real_time_list = []
             difference_time_list = []
 
             for info in information:
-                subject_list.append(info[1])
+                task_name_list.append(info[1])
                 expected_time_list.append(info[2])
                 real_time_list.append(info[3])
                 difference_time_list.append(info[4])
 
             dictionary = {}
-            dictionary["subject"] = subject_list
+            dictionary["task_name"] = task_name_list
             dictionary["expected_time"] = expected_time_list
             dictionary["real_time"] = real_time_list
             dictionary["difference_time"] = difference_time_list
-            return render_template("landing.html", dictionary=dictionary, user="Person Hello", numElements=len(dictionary["subject"])) #TODO change this back to username_global
+            return render_template("landing.html", dictionary=dictionary, user="Person Hello", numElements=len(dictionary["task_name"])) #TODO change this back to username_global
         else:
             return redirect("/")
 
     else:
         #for getting the timer
-        global expected_time, task_name, subject
+        global expected_time, task_name
         expected_time = request.form.get("expected_time")
-        subject = request.form.get("subject")
         task_name = request.form.get("task_name")
 
         

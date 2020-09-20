@@ -55,13 +55,14 @@ def landing():
 
     else:
         #for getting the timer
-        global expected_time
+        global expected_time, task_name, subject
         expected_time = request.form.get("expected_time")
         subject = request.form.get("subject")
         task_name = request.form.get("task_name")
+
         
         #error checking
-        if expected_time < 1:
+        if int(expected_time) < 1:
             return redirect("/apology")
         if not subject:
             return redirect("/apology")
@@ -164,6 +165,19 @@ def stats():
 
             return render_template("stats.html", user = "1")
 
+@app.route("/complete")
+def complete():
+    time_difference = request.args.get('difference')
+    print(time_difference)
+    time_total = int(expected_time) + int(time_difference)
+
+    con = lite.connect("all.db")
+    cur = con.cursor()
+    cur.execute("INSERT INTO history (username, project, expected_time, real_time, difference_time) VALUES (?, ?, ?, ?,?);", (username_global, task_name, expected_time, time_total, time_difference))
+    con.commit()
+    con.close()
+    return redirect("/")
+    
 
 @app.route("/logout")
 def logout():

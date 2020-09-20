@@ -5,6 +5,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # import headers.average, headers.timeConversions, headers.timer
 from ml import *
 
+expected_time = None
+task_name = None
+username_global = None
+
 app = Flask(__name__)
 app.secret_key = "asfdjklasdjflasdkf"
 
@@ -52,14 +56,12 @@ def landing():
             return render_template("landing.html", dictionary=dictionary, user=username_global, numElements=len(dictionary["task_name"])) #TODO change this back to username_global
         else:
             return redirect("/")
-
     else:
         #for getting the timer
         global expected_time, task_name
-        expected_time = request.form.get("expected_time")
         task_name = request.form.get("task_name")
+        expected_time = request.form.get("expected_time")
 
-        
         #error checking
         if int(expected_time) < 1:
             return redirect("/apology")

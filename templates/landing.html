@@ -56,19 +56,29 @@
         </div>
         <div class="col" id="col1">
             <h1 id="welcome">Hello {{ user }}</h1>
-            <form>
+            <script>
+                function start() {
+                    window.location.href = "/landing?difference=" + time_difference.toString()
+                }
+            </script>
+            <form action="javascript:start()">
                 <h2 id="hbegin">New Task</h2>
                 <div class="iput">
                     <p class="ht">Task Name: </p>
                     <input type="text" />
                 </div>
                 <div class="iput">
+<<<<<<< HEAD
                     <p class="ht">Subject: </p>
                     <input type="text" />
                 </div>
                 <div class="iput">
                     <p class="ht">Expected Time (h:m:s): </p>
                     <input type="text" />
+=======
+                    <p class="ht">Expected Time</p>
+                    <input type="text" name="expected_time" placeholder="Hours:Minutes:Seconds"/>
+>>>>>>> 940b9c8fbb368c0eae73eb2aadcf0fdff434353c
                 </div>
                 <div class="iput">
                     <input type="submit" id="sub" value="START">

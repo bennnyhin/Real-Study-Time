@@ -13,9 +13,6 @@ app = Flask(__name__)
 # cur.execute("SELECT * FROM information WHERE username='%s'" % username)
 # information = cur.fetchall()
 
-#remember to set global variable of username after login
-username_global 
-
 
 @app.route("/")
 def index():
@@ -108,6 +105,7 @@ def login():
             hash_pass = info[2]
         
         if check_password_hash(hash_pass, password):
+            global username_global
             username_global = username
             return redirect("/")
         return redirect("/apology")
@@ -121,19 +119,33 @@ Add model download that redirects to static/{id}.pkl
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
-    if request.method == "GET":
-        return render_template("stats.html", user_image = None)
-    else:
-        percentage = request.form.get("percentage")
-        model = request.form.get("percentage")
-        if not username:
-            return redirect("/apology")
-        if not password:
-            return redirect("/apology")
-        
-        plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+    con = lite.connect("all.db")
+    cur = con.cursor()
+    cur.execute("SELECT * FROM history WHERE username='%s';" % username_global)
+    information = cur.fetchall()
 
-        return render_template("stats.html", user_image = f"/static/{id}.png")
+    predicted_time_list = []
+    actual_time_list = []
+
+    for info in information:
+        predicted_time_list.append(info[3])
+        actual_time_list.append(info[4])
+    
+
+
+    # if request.method == "GET":
+    #     return render_template("stats.html", user_image = None)
+    # else:
+    #     percentage = request.form.get("percentage")
+    #     model = request.form.get("percentage")
+    #     if not username:
+    #         return redirect("/apology")
+    #     if not password:
+    #         return redirect("/apology")
+        
+    #     plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+
+    #     return render_template("stats.html", user_image = f"/static/{id}.png")
 
 
 

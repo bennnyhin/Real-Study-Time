@@ -124,7 +124,7 @@
                 <a class="logout" href="/logout">Log out</a>
             </div>
             <div class="timeElapsedDiv"> 
-                <a id="timer" class="timeElapsed" href="javascript:toggle_display()">0</a>
+                <a id="timer" class="timeElapsed" href="javascript:toggle_display()">0:0:0</a>
                 <br/>
                 <progress max="{{ timer }}" value=0 id="progressBar"></progress>
                 <script type="application/javascript">
@@ -167,6 +167,14 @@
                         }
                     }
 
+                    let secondsToString = (s) => {
+                        let h = Math.floor(s / 3600);
+                        s %= 3600;
+                        let m = Math.floor(s / 60);
+                        s %= 60;
+                        return `${h}:${m}:${s}`;
+                    }
+
                     const timerElement = document.getElementById("timer");
                     const progress = document.getElementById("progressBar");
     
@@ -178,12 +186,10 @@
                         if (stop_timer){
                             clearInterval(interval);
                             window.location.href = "/complete?difference=" + time_difference.toString();
-                            // window.location.href = "/complete?total=" + timerCounter.toString();
-                            // window.location.href = "/complete?expected=" + expected_time.toString();
                         }
                         if (timer_going){
                             timerCounter = timerCounter + 1;
-                            timerElement.innerText = timerCounter;
+                            timerElement.innerText = secondsToString(timerCounter);
                             progressBar.value = timerCounter;
                             time_difference = time_difference + 1;  
                             difference_time.innerText = time_difference;

@@ -47,7 +47,7 @@
             <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
             <script type="application/javascript">
                 const timerElement = document.getElementById("timer");
-                const progress = document.getElementById("progressBar")
+                const progress = document.getElementById("progressBar");
 
                 var timerCounter = progressBar.max;
 
@@ -57,7 +57,7 @@
                     }
 
                     timerCounter = timerCounter - 1;
-                    timerElement.innerText = timerCounter
+                    timerElement.innerText = timerCounter;
                     progressBar.value = timerCounter;
                 }, 1000)
             </script>

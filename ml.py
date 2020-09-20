@@ -24,7 +24,7 @@ def train(times, ID, x):
     times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
     regr = svm.SVR()
     regr.fit(times["Expected time"].values.reshape(-1, 1), times["Actual time"].values.reshape(-1, 1))
-    with open(f'{ID}.pkl', 'wb') as fid:
+    with open(f'static/{ID}.pkl', 'wb') as fid:
         pickle.dump(regr, fid)
     return regr.predict(np.asarray(x).reshape(1, -1))
 
@@ -35,7 +35,7 @@ def predict(x, ID):
     x (float): x value (expected time) to predict the y value (actual time)
     ID (str or int): Unique identifier, name of input model file
     '''
-    with open(f'{ID}.pkl', 'rb') as fid:
+    with open(f'static/{ID}.pkl', 'rb') as fid:
         regr_loaded = pickle.load(fid)
     return regr_loaded.predict(np.asarray(x).reshape(1, -1))
 
@@ -84,7 +84,7 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     
     fig.suptitle("Support Vector Regression", fontsize=14)
     #plt.show()
-    plt.savefig(f'{ID}.png')
+    plt.savefig(f'static/{ID}.png')
 
 def stats(times):
     r'''

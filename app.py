@@ -3,6 +3,7 @@ import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import average, timeConversions, timer
+from ml import *
 
 app = Flask(__name__)
 
@@ -111,9 +112,30 @@ def login():
             return redirect("/")
         return redirect("/apology")
 
-@app.route("/stats")
+
+'''
+todo: add times (iterable, with this format:)  ((predicted_time1, actual_time1), (predicted_time2, actual_time2), (predicted_timen, actual_timen))
+html according to this link: https://docs.google.com/drawings/d/1mPRTqE2jXMfDL8ZYX_1ulpt7_qXSAaNUh-PLpcZjDkI/edit?usp=sharing
+Add model download that redirects to static/{id}.pkl
+'''
+
+@app.route("/stats", methods=["GET", "POST"])
 def stats():
-    return render_template("stats.html")
+    if request.method == "GET":
+        return render_template("stats.html", user_image = None)
+    else:
+        percentage = request.form.get("percentage")
+        model = request.form.get("percentage")
+        if not username:
+            return redirect("/apology")
+        if not password:
+            return redirect("/apology")
+        
+        plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+
+        return render_template("stats.html", user_image = f"/static/{id}.png")
+
+
 
 if __name__ == "__main__":
     app.run()

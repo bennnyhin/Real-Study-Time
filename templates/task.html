@@ -43,6 +43,24 @@
     </head>         
     <body style="background-color: rgb(240, 139, 17);">
         <main class="container p-5">
+            <span class="timer" id="timer">{{ timer }}</span>
+            <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
+            <script type="application/javascript">
+                const timerElement = document.getElementById("timer");
+                const progress = document.getElementById("progressBar")
+
+                var timerCounter = progressBar.max;
+
+                const interval = setInterval(function() {
+                    if (timerCounter <= 1){
+                        clearInterval(interval);
+                    }
+
+                    timerCounter = timerCounter - 1;
+                    timerElement.innerText = timerCounter
+                    progressBar.value = timerCounter;
+                }, 1000)
+
             <style>
 
                 .userInfo {

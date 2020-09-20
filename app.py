@@ -2,10 +2,11 @@ import sys
 import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
-import average, timeConversions, timer
-from ml import *
+# import average, timeConversions, timer
+# from ml import *
 
 app = Flask(__name__)
+app.secret_key = "hello"
 
 #example how to access database
 # con = lite.connect("information.db")
@@ -14,40 +15,56 @@ app = Flask(__name__)
 # information = cur.fetchall()
 
 #remember to set global variable of username after login
-username_global 
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/landing")
+@app.route("/landing", methods=["GET", "POST"])
 def landing():
-    con = lite.connect("all.db")
-    cur = con.cursor()
-    username = "testing"
-    cur.execute("SELECT * FROM history WHERE username='%s';" % username)
-    information = cur.fetchall()
+    if request.method == "GET":
+        if "user" in session:
+            return render_template("landing.html")
+        else:
+            return redirect("/")
+    else:
+        #for displaying the history
+        con = lite.connect("all.db")
+        cur = con.cursor()
+        username = "testing"
+        cur.execute("SELECT * FROM history WHERE username='%s';" % username)
+        information = cur.fetchall()
 
-    #create list of different attributes
-    subject_list = []
-    expected_time_list = []
-    real_time_list = []
-    difference_time_list = []
+        #create list of different attributes
+        subject_list = []
+        expected_time_list = []
+        real_time_list = []
+        difference_time_list = []
 
-    for info in information:
-        subject_list.append(info[1])
-        expected_time_list.append(info[2])
-        real_time_list.append(info[3])
-        difference_time_list.append(info[4])
-    
-    dictionary = {}
-    dictionary["subject"] = subject_list
-    dictionary["expected_time"] = expected_time_list
-    dictionary["real_time"] = real_time_list
-    dictionary["difference_time"] = difference_time_list
+        for info in information:
+            subject_list.append(info[1])
+            expected_time_list.append(info[2])
+            real_time_list.append(info[3])
+            difference_time_list.append(info[4])
 
-    return render_template("landing.html", dictionary=dictionary)
+        dictionary = {}
+        dictionary["subject"] = subject_list
+        dictionary["expected_time"] = expected_time_list
+        dictionary["real_time"] = real_time_list
+        dictionary["difference_time"] = difference_time_list
+        return render_template("landing.html", dictionary=dictionary)
+
+        #for getting the timer
+        expected_time = request.form.get("expected_time")
+        print(expected_time)
+        subject = request.form.get("subject")
+        task_name = request.form.get("task_name")
+        session["timer"] = 15
+
+        print("hello world")
+        print(session["timer"])
+        return redirect("/task")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -79,7 +96,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress=username, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39")
+    return render_template("task.html", emailAddress=username, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39", timer=session["timer"])
 
 
 @app.route("/apology")
@@ -109,6 +126,7 @@ def login():
         
         if check_password_hash(hash_pass, password):
             username_global = username
+            session["user"] = username
             return redirect("/")
         return redirect("/apology")
 
@@ -121,21 +139,25 @@ Add model download that redirects to static/{id}.pkl
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
-    if request.method == "GET":
-        return render_template("stats.html", user_image = None)
-    else:
-        percentage = request.form.get("percentage")
-        model = request.form.get("percentage")
-        if not username:
-            return redirect("/apology")
-        if not password:
-            return redirect("/apology")
-        
-        plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+    if "user" in session:
+        if request.method == "GET":
+            return render_template("stats.html", user_image = None)
+        else:
+            percentage = request.form.get("percentage")
+            model = request.form.get("percentage")
+            if not username:
+                return redirect("/apology")
+            if not password:
+                return redirect("/apology")
+            
+            plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
 
-        return render_template("stats.html", user_image = f"/static/{id}.png")
+            return render_template("stats.html", user_image = f"/static/{id}.png")
 
-
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect("/login")
 
 if __name__ == "__main__":
     app.run()

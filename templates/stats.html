@@ -5,22 +5,25 @@
 {% endblock %}
 
 {% block main %}
+<div>
     <div class="container p-5">
         <h2>Plot</h2>
         <form action="/stats" method="POST">
             <div class="form-group">
-                <label for="model">Show Regression Model</label>
-                <input type="checkbox" class="form-control" id="model" name="model">
+                <label for="modell">Show Regression Model</label>
+                <input type="checkbox" class="form-control" id="modell" name="modell">
             </div>
             <div class="form-group">
-                <label for="percentage">Show Percentages</label>
-                <input type="checkbox" class="form-control" id="percentage" name="percentage">
+                <label for="percentagee">Show Percentages</label>
+                <input type="checkbox" class="form-control" id="percentagee" name="percentagee">
             </div>
             <div class="form-group">
                 <label for="stats">Show Statistics</label>
                 <input type="checkbox" class="form-control" id="stats" name="stats">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <!-- This button needs to update lines 39-44 also. Lines 39-44 update when I click the browser's refresh. Currently, the submit button it only resets lines 27-38. -->
+            <!-- If you have fixed the database, then please remember to uncomment line 174 in app.py and leave this comment here to remind Stanley -->
+            <button type="submit" value = "refresh" class="btn btn-primary">Submit</button>
         </div>
     <div class="float-left">
         {% if statistics %}
@@ -40,4 +43,5 @@
         <img src="/static/{{ user }}.png" alt="Plot">
         {% endif %}
     </div>
+</div>
 {% endblock %}

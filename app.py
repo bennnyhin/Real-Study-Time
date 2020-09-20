@@ -152,8 +152,10 @@ def stats():
         else:
             return redirect("/")
     else:
-        percentage = request.form.get("percentage")
-        model = request.form.get("model")
+        percentage = request.form.get("percentagee")
+        percentage = True if percentage=='on' else False
+        model = request.form.get("modell")
+        model = True if model=='on' else False
         stat = request.form.get("stats")
         con = lite.connect("all.db")
         cur = con.cursor()
@@ -167,9 +169,12 @@ def stats():
             predicted_time_list.append(info[3])
             actual_time_list.append(info[4])
         times = np.column_stack([np.asarray(predicted_time_list), np.asarray(actual_time_list)])
-        # COMMENT THIS OUT IF LEGIT DATA
+        
+        # COMMENT THE FOLLOWING LINE OUT IF LEGIT DATA
         times = generate_noisy_data()
-        plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+        print(percentage)
+        print(model)
+        plotmodel(times, username_global, percentage=percentage, model=model) # please see ml.py for what this does, there is detailed documentation there
         if stat:
             stati = statistics(times)
             print(stati)

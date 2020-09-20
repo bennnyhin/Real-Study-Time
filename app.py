@@ -2,7 +2,7 @@ import sys
 import sqlite3 as lite
 from flask import Flask, redirect, render_template, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
-# import average, timeConversions, timer
+# import headers.average, headers.timeConversions, headers.timer
 # from ml import *
 
 app = Flask(__name__)
@@ -13,9 +13,6 @@ app.secret_key = "hello"
 # cur = con.cursor()
 # cur.execute("SELECT * FROM information WHERE username='%s'" % username)
 # information = cur.fetchall()
-
-#remember to set global variable of username after login
-
 
 @app.route("/")
 def index():
@@ -125,6 +122,7 @@ def login():
             hash_pass = info[2]
         
         if check_password_hash(hash_pass, password):
+            global username_global
             username_global = username
             session["user"] = username
             return redirect("/")
@@ -139,6 +137,7 @@ Add model download that redirects to static/{id}.pkl
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
+<<<<<<< HEAD
     if "user" in session:
         if request.method == "GET":
             return render_template("stats.html", user_image = None)
@@ -158,6 +157,39 @@ def stats():
 def logout():
     session.pop("user", None)
     return redirect("/login")
+=======
+    con = lite.connect("all.db")
+    cur = con.cursor()
+    cur.execute("SELECT * FROM history WHERE username='%s';" % username_global)
+    information = cur.fetchall()
+
+    predicted_time_list = []
+    actual_time_list = []
+
+    for info in information:
+        predicted_time_list.append(info[3])
+        actual_time_list.append(info[4])
+
+    times = np.column_stack(np.asarray(predicted_time_list), np.asarray(actual_time_list))
+    return render_template("stats.html")
+
+
+    # if request.method == "GET":
+    #     return render_template("stats.html", user_image = None)
+    # else:
+    #     percentage = request.form.get("percentage")
+    #     model = request.form.get("percentage")
+    #     if not username:
+    #         return redirect("/apology")
+    #     if not password:
+    #         return redirect("/apology")
+        
+    #     plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+
+    #     return render_template("stats.html", user_image = f"/static/{id}.png")
+
+
+>>>>>>> a97b9ab2e68cd4384a436aa89835b950e5293b94
 
 if __name__ == "__main__":
     app.run()

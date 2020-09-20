@@ -1,32 +1,56 @@
 from sklearn import svm
+from sklearn.preprocessing import LabelBinarizer
 import pickle
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import string
 
-def generate_noisy_data(): 
+ALPHABET = np.array(list(string.ascii_lowercase + ' '))[:5]
+
+def generate_noisy_data(train=False): 
     #Generate linear noisy data for testing. 
     X = np.sort(5 * np.random.rand(200, 1), axis=0)
     y = X.ravel()
     y = np.random.normal(y, .1)
 
     times = np.column_stack((X, y+0.1))
+    if train:
+        randomalph = np.random.choice(ALPHABET, size=200)
+        times = np.column_stack((times, randomalph))
+
     return times
 
-def train(times, ID, x):
+def train(times, ID, X):
     r'''
     Train and save model:
     args:
-    times (iterable): Same format as generate_noisy_data (dimensions are (x, 2))
+    times (iterable): Same format as generate_noisy_data but with a 3rd column at the end with strings
     ID (str or int): Unique identifier, name of saved model
-    x (float): x value (expected time) to predict the y value (actual time)
+    x (iterable): x value (format: (expected time, "subject")) to predict the y value (actual time)
     '''
-    times = pd.DataFrame(times, columns=["Expected time", "Actual time"])
+    times = pd.DataFrame(times, columns=["Expected time", "Actual time", "Subject"])
+    d = dict([(y,x+1) for x,y in enumerate(sorted(set(times['Subject'].unique())))])
+    times.loc[:, 'Subject'] = times.loc[:, 'Subject'].map(d)
+    #bin = LabelBinarizer()
+    #x = np.asarray(bin.fit_transform(times.Subject))
+    temp = times.Subject.copy()
+    x = pd.get_dummies(times.Subject)
+    print(x.shape)
+    x = np.column_stack((times["Expected time"].values, x))
+    y = times["Actual time"].values.reshape(-1, 1)
     regr = svm.SVR()
-    regr.fit(times["Expected time"].values.reshape(-1, 1), times["Actual time"].values.reshape(-1, 1))
+    regr.fit(x, y)
     with open(f'static/{ID}.pkl', 'wb') as fid:
         pickle.dump(regr, fid)
-    return regr.predict(np.asarray(x).reshape(1, -1))
+    pred = pd.DataFrame([X], columns = ["Expected time", "Subject"])
+    pred.loc[:, 'Subject'] = pred.loc[:, 'Subject'].map(d)
+    #X = np.asarray(bin.fit_transform(pred.Subject))
+    X = np.asarray(pd.get_dummies(temp.append(pred.Subject)))
+    X = np.column_stack((pred["Expected time"].values[0], [X[-1]]))
+    return regr.predict(X)
+
+print(train(generate_noisy_data(train=True), 1, (24, 'a')))
 
 def predict(x, ID): 
     r'''
@@ -86,7 +110,7 @@ def plotmodel(times, ID, percentage=False, model=True): # plot model from past t
     #plt.show()
     plt.savefig(f'static/{ID}.png')
 
-def stats(times):
+def statistics(times):
     r'''
     Returns statistics about times
     args:

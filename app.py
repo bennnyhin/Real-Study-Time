@@ -22,45 +22,40 @@ def index():
 def landing():
     if request.method == "GET":
         if "user" in session:
-            return render_template("landing.html")
+            #for displaying the history
+            con = lite.connect("all.db")
+            cur = con.cursor()
+            username = "testing"
+            cur.execute("SELECT * FROM history WHERE username='%s';" % username)
+            information = cur.fetchall()
+
+            #create list of different attributes
+            subject_list = []
+            expected_time_list = []
+            real_time_list = []
+            difference_time_list = []
+
+            for info in information:
+                subject_list.append(info[1])
+                expected_time_list.append(info[2])
+                real_time_list.append(info[3])
+                difference_time_list.append(info[4])
+
+            dictionary = {}
+            dictionary["subject"] = subject_list
+            dictionary["expected_time"] = expected_time_list
+            dictionary["real_time"] = real_time_list
+            dictionary["difference_time"] = difference_time_list
+            return render_template("landing.html", dictionary=dictionary)
         else:
             return redirect("/")
+
     else:
-        #for displaying the history
-        con = lite.connect("all.db")
-        cur = con.cursor()
-        username = "testing"
-        cur.execute("SELECT * FROM history WHERE username='%s';" % username)
-        information = cur.fetchall()
-
-        #create list of different attributes
-        subject_list = []
-        expected_time_list = []
-        real_time_list = []
-        difference_time_list = []
-
-        for info in information:
-            subject_list.append(info[1])
-            expected_time_list.append(info[2])
-            real_time_list.append(info[3])
-            difference_time_list.append(info[4])
-
-        dictionary = {}
-        dictionary["subject"] = subject_list
-        dictionary["expected_time"] = expected_time_list
-        dictionary["real_time"] = real_time_list
-        dictionary["difference_time"] = difference_time_list
-        return render_template("landing.html", dictionary=dictionary)
-
         #for getting the timer
         expected_time = request.form.get("expected_time")
-        print(expected_time)
         subject = request.form.get("subject")
         task_name = request.form.get("task_name")
-        session["timer"] = 15
-
-        print("hello world")
-        print(session["timer"])
+        session["timer"] = expected_time
         return redirect("/task")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -93,7 +88,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress=username, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39", timer=session["timer"])
+    return render_template("task.html", emailAddress=username_global, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39", timer=session["timer"])
 
 
 @app.route("/apology")

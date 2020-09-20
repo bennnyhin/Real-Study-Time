@@ -124,4 +124,4 @@ def statistics(times):
 
 
 #plotmodel(generate_noisy_data(), 1, percentage=False)
-#print(stats(generate_noisy_data()))
+#print(statistics(generate_noisy_data()))

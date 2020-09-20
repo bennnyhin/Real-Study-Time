@@ -78,7 +78,7 @@ def register():
 
 @app.route("/task")
 def task():
-    return render_template("task.html", emailAddress="themicklepickle@gmail.com", timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39")
+    return render_template("task.html", emailAddress=username, timeElapsed="15:21", timeExpected="1:00:00", timeDifference="44:39")
 
 
 @app.route("/apology")

@@ -139,27 +139,30 @@ def login():
 
 
 '''
-todo: add times (iterable, with this format:)  ((predicted_time1, actual_time1), (predicted_time2, actual_time2), (predicted_timen, actual_timen))
+todo: 
 html according to this link: https://docs.google.com/drawings/d/1mPRTqE2jXMfDL8ZYX_1ulpt7_qXSAaNUh-PLpcZjDkI/edit?usp=sharing
+add times (iterable, with this format:)  ((predicted_time1, actual_time1), (predicted_time2, actual_time2), (predicted_timen, actual_timen))
 Add model download that redirects to static/{id}.pkl
+what format does cur.fetchall() output?
 '''
 
 @app.route("/stats", methods=["GET", "POST"])
 def stats():
-    if "user" in session:
-        if request.method == "GET":
-            return render_template("stats.html", user_image = None)
-        else:
-            percentage = request.form.get("percentage")
-            model = request.form.get("percentage")
-            if not username:
-                return redirect("/apology")
-            if not password:
-                return redirect("/apology")
+    # if "user" in session:
+    #     if request.method == "GET":
+    #         return render_template("stats.html", user_image = None)
+    #     else:
+    #         percentage = request.form.get("percentage")
+    #         model = request.form.get("percentage")
+    #         if not username:
+    #             return redirect("/apology")
+    #         if not password:
+    #             return redirect("/apology")
             
-            plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
+    #         plotmodel(times, username_global, percentage, model) # please see ml.py for what this does, there is detailed documentation there
 
-            return render_template("stats.html", user_image = f"/static/{id}.png")
+            return render_template("stats.html", user = "1")
+
 
 @app.route("/logout")
 def logout():

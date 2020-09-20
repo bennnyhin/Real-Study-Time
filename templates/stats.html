@@ -5,5 +5,32 @@
 {% endblock %}
 
 {% block main %}
-
+    <div class="container p-5">
+        <h2>Plot</h2>
+        <form action="/stats" method="POST">
+            <div class="form-group">
+                <label for="model">Show Regression Model</label>
+                <input type="checkbox" class="form-control" id="model" name="model">
+            </div>
+            <div class="form-group">
+                <label for="percentage">Show Percentages</label>
+                <input type="checkbox" class="form-control" id="percentage" name="percentage">
+            </div>
+            <div class="form-group">
+                <label for="stats">Show Statistics</label>
+                <input type="checkbox" class="form-control" id="stats" name="stats">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    <div class="container p-5">
+        <!-- Download the pickle model by creating a button. No clue how to do this, but it is in /static/{{  user  }}.pkl -->
+        <!-- <form method="get" action="/static/{{  user }}.pkl"> -->
+        <form action="http://127.0.0.1:5000/static/{{  user  }}.pkl">
+        <button type="submit">Download Model</button>
+        </form>
+    </div> 
+    <div class="float-right">
+        <!-- Display image, this works. -->
+        <img src="/static/{{ user }}.png" alt="Plot">
+    </div>
 {% endblock %}

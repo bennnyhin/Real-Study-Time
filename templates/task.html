@@ -15,58 +15,15 @@
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
-        <script>
-            function toggle_display() {
-                el = document.querySelector('.completed');
-                if (el.style.visibility == 'hidden') {
-                    el.style.visibility = 'visible';
-                } else {
-                    el.style.visibility = 'hidden';
-                }
-
-                el = document.querySelector('.bottomDiv');
-                if (el.style.visibility == 'hidden') {
-                    el.style.visibility = 'visible'
-                } else {
-                    el.style.visibility = 'hidden'
-                }
-
-                el = document.querySelector('.userInfo');
-                if (el.style.visibility == 'hidden') {
-                    el.style.visibility = 'visible'
-                } else {
-                    el.style.visibility = 'hidden'
-                }
-            }
-        </script>
     </head>         
     <body style="background-color: rgb(240, 139, 17);">
         <main class="container p-5">
-            <!-- <span class="timer" id="timer">{{ timer }}</span>
-            <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
-            <script type="application/javascript">
-                const timerElement = document.getElementById("timer");
-                const progress = document.getElementById("progressBar");
-
-                var timerCounter = progressBar.max;
-
-                const interval = setInterval(function() {
-                    if (timerCounter <= 1){
-                        clearInterval(interval);
-                    }
-
-                    timerCounter = timerCounter - 1;
-                    timerElement.innerText = timerCounter;
-                    progressBar.value = timerCounter;
-                }, 1000)
-            </script> -->
-
             <style>
                 .userInfo {
                     position: absolute;
                     right: 50px;
                     text-align: right;
+                    visibility: hidden;
                 }
     
                 .email {
@@ -126,6 +83,7 @@
                     font-size: 30px;
                     border-radius: 10px;
                     transition: color 0.4s, background-color 0.4s, visibility 0s;
+                    visibility: hidden;
                 }
                 .completed:hover {
                     color: lightskyblue;
@@ -137,6 +95,7 @@
                     margin: 0 auto;
                     padding-top: 50px;
                     color: white;
+                    visibility: hidden;
                 }
 
                 .timeExpectedDiv {
@@ -162,7 +121,7 @@
 
             <div class="userInfo"> 
                 <p class="email">{{ emailAddress }}</p>
-                <a class="logout" href="">Log out</a>
+                <a class="logout" href="/logout">Log out</a>
             </div>
             <div class="timeElapsedDiv"> 
                 <a id="timer" class="timeElapsed" href="javascript:toggle_display()">{{ timer }}</a>
@@ -170,11 +129,44 @@
                 <progress max="{{ timer }}" value="{{ timer }}" id="progressBar"></progress>
                 <script type="application/javascript">
                     let stop_timer = false;
+                    var timer_going = true;
 
                     function complete(){
                         stop_timer = true;
                     }
 
+                    function resume(){
+                        timer_going = true;
+                    }
+
+                    function pause(){
+                        timer_going = false;
+                    }
+                    function toggle_display() {
+                        el = document.querySelector('.completed');
+                        if (el.style.visibility == 'hidden') {
+                            pause();
+                            el.style.visibility = 'visible';
+                        } else {
+                            resume();
+                            el.style.visibility = 'hidden';
+                        }
+
+                        el = document.querySelector('.bottomDiv');
+                        if (el.style.visibility == 'hidden') {
+                            el.style.visibility = 'visible'
+                        } else {
+                            el.style.visibility = 'hidden'
+                        }
+
+                        el = document.querySelector('.userInfo');
+                        if (el.style.visibility == 'hidden') {
+                            el.style.visibility = 'visible'
+                        } else {
+                            el.style.visibility = 'hidden'
+                }
+            }
+                    
                     const timerElement = document.getElementById("timer");
                     const progress = document.getElementById("progressBar");
     
@@ -184,10 +176,11 @@
                         if (stop_timer){
                             clearInterval(interval);
                         }
-    
-                        timerCounter = timerCounter - 1;
-                        timerElement.innerText = timerCounter;
-                        progressBar.value = timerCounter;
+                        if (timer_going){
+                            timerCounter = timerCounter - 1;
+                            timerElement.innerText = timerCounter;
+                            progressBar.value = timerCounter;
+                        }
                     }, 1000)
 
                 </script>

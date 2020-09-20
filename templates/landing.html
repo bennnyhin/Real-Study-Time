@@ -10,7 +10,7 @@
             * {
                 margin: 0px;
                 padding: 0px;
-                font-family: 'IBM Plex Sans', sans-serif;
+                /* font-family: 'IBM Plex Sans', sans-serif; */
             }
 
             body {    
@@ -22,7 +22,8 @@
                 display: flex;
                 flex-direction: column;
                 height: 100vh;
-                padding: 60px;
+                /* padding-left: 60px;
+                padding-right: 60px; */
             }
 
             #col1 {
@@ -46,18 +47,32 @@
 
             input {
                 width: 100%;
-                padding: 20px;
+                padding: 10px;
+                font-size: 20px;
                 border: 2px solid black;
                 border-radius: 10px;
             }
 
             #sub {
                 width: 100%;
-                margin-top: 100px;
+                margin-top: 50px;
+                background-color: lightskyblue;
+                color: white;
+                border: 2px solid white;
+                padding: 15px 32px;
+                text-align: center;
+                font-size: 30px;
+                border-radius: 10px;
+                transition: color 0.4s, background-color 0.4s, visibility 0s, border 0.4s;
+            }
+            #sub:hover {
+                color: lightskyblue;
+                background-color: white;
+                border: 2px solid lightskyblue;
             }
 
             .ht {
-                margin-bottom: 5px;
+                margin-bottom: 15px;
             }
 
             .center {
@@ -70,8 +85,8 @@
                 text-align: right;
             }
 
-            .logout {
-                top: 20px;
+            .username {
+                padding-bottom: 10px;
             }
 
             a:link {
@@ -92,9 +107,46 @@
             }
 
             h2 {
+                padding-bottom: 20px;
+                font-size: 40px;
 
             }
 
+            th {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .header {
+                font-size: 20px;
+            }
+
+            table{
+                border-collapse:collapse;
+                border:1px solid lightgray;
+            }
+
+            table td{
+                border:1px solid lightgray;
+                padding: 10px;
+            }
+
+            .stats {
+                margin-top: 30px;
+                background-color: lightskyblue;
+                color: white;
+                border: 2px solid white;
+                padding: 15px 32px;
+                text-align: center;
+                font-size: 30px;
+                border-radius: 10px;
+                transition: color 0.4s, background-color 0.4s, visibility 0s, border 0.4s;
+            }
+            .stats:hover {
+                color: lightskyblue;
+                background-color: white;
+                border: 2px solid lightskyblue;
+            }
         </style>
     </head>
     <body>
@@ -103,16 +155,12 @@
             <form>
                 <h2 id="hbegin">New Task</h2>
                 <div class="iput">
-                    <p class="ht">Task Name: </p>
+                    <p class="ht">Task Name</p>
                     <input type="text" />
                 </div>
                 <div class="iput">
-                    <p class="ht">Subject: </p>
-                    <input type="text" />
-                </div>
-                <div class="iput">
-                    <p class="ht">Expected Time (h:m:s): </p>
-                    <input type="text" />
+                    <p class="ht">Expected Time</p>
+                    <input type="text" placeholder="Hours:Minutes:Seconds"/>
                 </div>
                 <div class="iput">
                     <input type="submit" id="sub" value="START">
@@ -121,23 +169,30 @@
         </div>
         <div class="col" id="col2">
             <div class="userInfo">
-                <p>{{ user }}</p>
+                <p class="username">{{ user }}</p>
                 <a class="logout" href="/logout">Log Out</a>
             </div>
             <div>
                 <h2>History</h2>
-                <table>
-                    <tr>
+                <table style="width: 100%">
+                    <tr class="header">
                         <th>Task Name</th>
-                        <th>Subject</th>
                         <th>Expected Time</th>
                         <th>Real Time</th>
                         <th>Difference</th>
                     </tr>
+                    {% for i in range(numElements) %}
+                        <tr>
+                            <td>{{ dictionary["task_name"][i] }}</th>
+                            <td>{{ dictionary["expected_time"][i] }}</th>
+                            <td>{{ dictionary["real_time"][i] }}</th>
+                            <td>{{ dictionary["difference_time"][i] }}</th>
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div>
-                <button>Stats for nerds</button>
+                <button class="stats" href="https://google.com">More Stats</button>
             </div>
         </div>
     </body>
